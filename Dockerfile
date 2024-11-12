@@ -11,10 +11,10 @@ RUN ./gradlew clean bootJar
 
 FROM openjdk:17
 
-COPY --from=builder build/libs/app.jar /app.jar
+COPY --from=builder build/libs/*.jar app.jar
 
 COPY src/main/resources/application*.yml /app/resources/
 
 VOLUME /tmp
 
-ENTRYPOINT ["java", "-javaagent:/usr/agent/dd-java-agent.jar", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
