@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class WalkingDayDto {
 	private int day;
 	private boolean isWalkingDay;
+
+	public void changeState() {
+		isWalkingDay = !isWalkingDay;
+	}
 }

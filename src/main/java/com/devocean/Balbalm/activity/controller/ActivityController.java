@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
 import com.devocean.Balbalm.activity.service.ActivityService;
+import com.devocean.Balbalm.calendar.dto.WalkingDayDto;
 import com.devocean.Balbalm.global.exception.CommonResponse;
 import com.devocean.Balbalm.global.util.JwtUtil;
 
@@ -23,15 +25,15 @@ public class ActivityController {
 	private final JwtUtil jwtUtil;
 
 	@GetMapping()
-	public CommonResponse<List<ActivityDto>> getActivity(@RequestParam String token, @RequestParam LocalDate date) {
-		return new CommonResponse<>(activityService.getActivities(jwtUtil.extractSocialId(token), date));
+	public CommonResponse<List<ActivityDto>> getActivity(@RequestHeader("Authorization") String token, @RequestParam LocalDate date) {
+		return new CommonResponse<>(activityService.getActivities(jwtUtil.extractSocialId(token.substring(7)), date));
 	}
 
 	@GetMapping("/month")
-	public CommonResponse<List<Integer>> getActivityDay(@RequestParam int month, @RequestParam int year, @RequestParam String token) {
+	public CommonResponse<List<WalkingDayDto>> getActivityDay(@RequestParam int month, @RequestParam int year, @RequestHeader("Authorization") String token) {
 		return new CommonResponse<>(
 			activityService.getActivitiesInMonth(
-				jwtUtil.extractSocialId(token), year, month)
+				jwtUtil.extractSocialId(token.substring(7)), year, month)
 		);
 	}
 }

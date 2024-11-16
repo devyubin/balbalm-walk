@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.devocean.Balbalm.activity.entity.Activity;
 import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
 import com.devocean.Balbalm.activity.repository.ActivityRepository;
+import com.devocean.Balbalm.calendar.dto.WalkingDayDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,18 @@ public class ActivityService {
 			.collect(Collectors.toList());
 	}
 
-	public List<Integer> getActivitiesInMonth(String user_id, int year, int month) {
-		return activityRepository.findByYearAndMonth(year, month, user_id)
+	public List<WalkingDayDto> getActivitiesInMonth(String user_id, int year, int month) {
+		List<WalkingDayDto> walkingDayDtos = new ArrayList<>();
+		for(int i=1; i<=31; i++) {
+			walkingDayDtos.add(new WalkingDayDto(i, false));
+		}
+
+		List<Integer> walkingDay = activityRepository.findByYearAndMonth(year, month, user_id)
 			.stream().map(activity -> activity.getDate().getDayOfMonth()).collect(Collectors.toList());
+		for(int day : walkingDay) {
+			walkingDayDtos.get(day-1).changeState();
+		}
+
+		return walkingDayDtos;
 	}
 }
