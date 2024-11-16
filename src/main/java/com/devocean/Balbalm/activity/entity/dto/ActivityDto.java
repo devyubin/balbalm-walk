@@ -10,9 +10,9 @@ import lombok.Getter;
 @Builder
 public class ActivityDto {
 	private String date;
-	private Long hours;
-	private Long minutes;
-	private Long seconds;
+	private int hours;
+	private int minutes;
+	private int seconds;
 	private double distance;
 	private int kcal;
 

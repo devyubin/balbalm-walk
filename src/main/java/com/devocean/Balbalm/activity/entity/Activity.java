@@ -17,9 +17,9 @@ public class Activity {
 	private Long id;
 	private Long user_id;
 	private LocalDate date;
-	private Long hours;
-	private Long minutes;
-	private Long seconds;
+	private int hours;
+	private int minutes;
+	private int seconds;
 	private double distance;
 	private int kcal;
 }
