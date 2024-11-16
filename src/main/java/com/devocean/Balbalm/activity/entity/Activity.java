@@ -15,8 +15,11 @@ public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Long user_id;
 	private LocalDate date;
-	private Duration time;
+	private Long hours;
+	private Long minutes;
+	private Long seconds;
 	private double distance;
 	private int kcal;
 }
