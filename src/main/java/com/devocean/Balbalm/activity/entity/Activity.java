@@ -15,7 +15,7 @@ public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Long user_id;
+	private String userId;
 	private LocalDate date;
 	private int hours;
 	private int minutes;

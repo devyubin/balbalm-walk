@@ -12,20 +12,22 @@ import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
 import com.devocean.Balbalm.activity.repository.ActivityRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ActivityService {
 	private final ActivityRepository activityRepository;
 
-	public List<ActivityDto> getActivities(LocalDate date) {
-		return activityRepository.findByDate(date).stream()
+	public List<ActivityDto> getActivities(String user_id, LocalDate date) {
+		return activityRepository.findByDateAndUserId(date, user_id).stream()
 			.map(activity -> ActivityDto.of(activity))
 			.collect(Collectors.toList());
 	}
 
-	public List<Integer> getActivitiesInMonth(int year, int month) {
-		return activityRepository.findByYearAndMonth(year, month)
+	public List<Integer> getActivitiesInMonth(String user_id, int year, int month) {
+		return activityRepository.findByYearAndMonth(year, month, user_id)
 			.stream().map(activity -> activity.getDate().getDayOfMonth()).collect(Collectors.toList());
 	}
 }
