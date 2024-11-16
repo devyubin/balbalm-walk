@@ -23,4 +23,9 @@ public class ActivityController {
 	public List<ActivityDto> getActivity(@RequestParam Long userId, @RequestParam LocalDate date) {
 		return activityService.getActivities(date);
 	}
+
+	@GetMapping("/month")
+	public List<Integer> getActivityDay(@RequestParam int year, @RequestParam int month) {
+		return activityService.getActivitiesInMonth(year, month);
+	}
 }
