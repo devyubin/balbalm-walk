@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
 import com.devocean.Balbalm.activity.service.ActivityService;
+import com.devocean.Balbalm.global.exception.CommonResponse;
 import com.devocean.Balbalm.global.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,15 @@ public class ActivityController {
 	private final JwtUtil jwtUtil;
 
 	@GetMapping()
-	public List<ActivityDto> getActivity(@RequestParam String token, @RequestParam LocalDate date) {
-		return activityService.getActivities(jwtUtil.extractSocialId(token), date);
+	public CommonResponse<List<ActivityDto>> getActivity(@RequestParam String token, @RequestParam LocalDate date) {
+		return new CommonResponse<>(activityService.getActivities(jwtUtil.extractSocialId(token), date));
 	}
 
 	@GetMapping("/month")
-	public List<Integer> getActivityDay(@RequestParam int month, @RequestParam int year, @RequestParam String token) {
-		return activityService.getActivitiesInMonth(
-			jwtUtil.extractSocialId(token), year, month);
+	public CommonResponse<List<Integer>> getActivityDay(@RequestParam int month, @RequestParam int year, @RequestParam String token) {
+		return new CommonResponse<>(
+			activityService.getActivitiesInMonth(
+				jwtUtil.extractSocialId(token), year, month)
+		);
 	}
 }
