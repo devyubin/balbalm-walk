@@ -1,7 +1,6 @@
 package com.devocean.Balbalm.activity.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ActivityService {
-	private final ActivityRepository activityRepository;
 	private final WalkRepository walkRepository;
 
 	public List<ActivityDto> getActivities(String user_id, LocalDate date) {
@@ -37,8 +35,8 @@ public class ActivityService {
 			walkingDayDtos.add(new WalkingDayDto(i, false));
 		}
 
-		List<Integer> walkingDay = activityRepository.findByYearAndMonth(year, month, user_id)
-			.stream().map(activity -> activity.getDate().getDayOfMonth()).collect(Collectors.toList());
+		List<Integer> walkingDay = walkRepository.findByYearAndMonth(year, month, user_id)
+			.stream().map(walk -> walk.getCreatedTime().getDayOfMonth()).collect(Collectors.toList());
 		for(int day : walkingDay) {
 			walkingDayDtos.get(day-1).changeState();
 		}
