@@ -1,6 +1,8 @@
 package com.devocean.Balbalm.activity.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
-import com.devocean.Balbalm.activity.repository.ActivityRepository;
 import com.devocean.Balbalm.calendar.dto.WalkingDayDto;
 import com.devocean.Balbalm.walk.entity.Walk;
 import com.devocean.Balbalm.walk.repository.WalkRepository;
@@ -23,7 +24,10 @@ public class ActivityService {
 	private final WalkRepository walkRepository;
 
 	public List<ActivityDto> getActivities(String user_id, LocalDate date) {
-		List<Walk> walks = walkRepository.findByCreatedTimeAndUserId(date, user_id);
+		LocalDateTime startOfDay = date.atStartOfDay();
+		LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+		List<Walk> walks = walkRepository.findByCreatedTimeBetweenAndUserId(startOfDay, endOfDay, user_id);
 		return walks.stream()
 			.map(walk -> ActivityDto.of(walk))
 			.collect(Collectors.toList());
