@@ -2,6 +2,7 @@ package com.devocean.Balbalm.activity.entity.dto;
 
 
 import com.devocean.Balbalm.activity.entity.Activity;
+import com.devocean.Balbalm.walk.entity.Walk;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,21 +10,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ActivityDto {
-	private String date;
-	private int hours;
-	private int minutes;
-	private int seconds;
+	private long time;
 	private double distance;
 	private int kcal;
 
-	public static ActivityDto of(Activity activity) {
+	public static ActivityDto of(Walk walk) {
 		return ActivityDto.builder()
-			.date(activity.getDate().toString())
-			.hours(activity.getHours())
-			.minutes(activity.getMinutes())
-			.seconds(activity.getSeconds())
-			.distance(activity.getDistance())
-			.kcal(activity.getKcal())
+			.time(walk.getTime())
+			.distance(walk.getDistance())
+			.kcal(walk.getKcal())
 			.build();
 	}
 }

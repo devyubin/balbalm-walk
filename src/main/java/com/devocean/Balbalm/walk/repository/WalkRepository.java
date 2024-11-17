@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface WalkRepository extends JpaRepository<Walk, Long> {
     List<Walk> findByCreatedTimeBetween(LocalDate startDate, LocalDate endDate);
+    List<Walk> findByCreatedTimeAndUserId(LocalDate createdDate, String userId);
 }
