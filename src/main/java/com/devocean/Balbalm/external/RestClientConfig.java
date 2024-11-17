@@ -14,9 +14,9 @@ import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Slf4j
-@Configuration
-@RequiredArgsConstructor
 @EnableConfigurationProperties(ExternalApiProperties.class)
+@RequiredArgsConstructor
+@Configuration
 public class RestClientConfig {
     private final RestClient.Builder restClientBuilder;
     private final ExternalApiProperties externalApiProperties;
