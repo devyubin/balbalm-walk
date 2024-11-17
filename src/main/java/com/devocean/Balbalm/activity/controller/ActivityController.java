@@ -15,6 +15,7 @@ import com.devocean.Balbalm.calendar.dto.WalkingDayDto;
 import com.devocean.Balbalm.global.exception.CommonResponse;
 import com.devocean.Balbalm.global.util.JwtUtil;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,12 +26,21 @@ public class ActivityController {
 	private final JwtUtil jwtUtil;
 
 	@GetMapping()
-	public CommonResponse<List<ActivityDto>> getActivity(@RequestHeader("Authorization") String token, @RequestParam LocalDate date) {
+	public CommonResponse<List<ActivityDto>> getActivity(
+		@Parameter(description = "JWT token for authorization")
+		@RequestHeader("Authorization") String token,
+		@Parameter(description = "조회하고 싶은 날")
+		@RequestParam LocalDate date) {
 		return new CommonResponse<>(activityService.getActivities(jwtUtil.extractSocialId(token.substring(7)), date));
 	}
 
 	@GetMapping("/month")
-	public CommonResponse<List<WalkingDayDto>> getActivityDay(@RequestParam int month, @RequestParam int year, @RequestHeader("Authorization") String token) {
+	public CommonResponse<List<WalkingDayDto>> getActivityDay(
+		@Parameter(description = "조회하는 월")
+		@RequestParam int month,
+		@Parameter(description = "조회하는 년")
+		@RequestParam int year,
+		@RequestHeader("Authorization") String token) {
 		return new CommonResponse<>(
 			activityService.getActivitiesInMonth(
 				jwtUtil.extractSocialId(token.substring(7)), year, month)
