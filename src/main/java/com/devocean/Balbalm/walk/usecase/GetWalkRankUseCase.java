@@ -85,7 +85,7 @@ public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, G
         @Serial
         private static final long serialVersionUID = -2279484834715742375L;
         
-        private List<Rank> rankList = new ArrayList<>();
+        private List<Rank> rankList;
 
         @Getter
         @Setter
