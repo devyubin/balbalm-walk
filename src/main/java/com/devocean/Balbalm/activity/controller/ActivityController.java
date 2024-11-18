@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devocean.Balbalm.activity.entity.dto.ActivityDto;
 import com.devocean.Balbalm.activity.service.ActivityService;
-import com.devocean.Balbalm.calendar.dto.WalkingDayDto;
 import com.devocean.Balbalm.global.exception.CommonResponse;
 import com.devocean.Balbalm.global.util.JwtUtil;
 
@@ -36,19 +35,5 @@ public class ActivityController {
 		@Parameter(description = "조회하고 싶은 날")
 		@RequestParam LocalDate date) {
 		return new CommonResponse<>(activityService.getActivities(jwtUtil.extractSocialId(token.substring(7)), date));
-	}
-
-	@GetMapping("/month")
-	@Operation(summary = "월별 활동 조회", description = "연도와 월을 기준으로 월별 활동 정보를 조회합니다.")
-	public CommonResponse<List<WalkingDayDto>> getActivityDay(
-		@Parameter(description = "조회하는 월")
-		@RequestParam int month,
-		@Parameter(description = "조회하는 연도")
-		@RequestParam int year,
-		@RequestHeader("Authorization") String token) {
-		return new CommonResponse<>(
-			activityService.getActivitiesInMonth(
-				jwtUtil.extractSocialId(token.substring(7)), year, month)
-		);
 	}
 }
