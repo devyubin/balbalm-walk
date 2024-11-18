@@ -14,7 +14,8 @@ public class WalkController {
     private final GetWalkRankUseCase getWalkRankUseCase;
 
     @PostMapping
-    public CommonResponse<SaveWalkUseCase.Result> saveWalk(@RequestBody SaveWalkUseCase.Command command) {
+    public CommonResponse<SaveWalkUseCase.Result> saveWalk(@RequestHeader("Authorization") String token, @RequestBody SaveWalkUseCase.Command command) {
+        command.setToken(token.substring(7));
         return new CommonResponse<>(saveWalkUseCase.execute(command));
     }
 

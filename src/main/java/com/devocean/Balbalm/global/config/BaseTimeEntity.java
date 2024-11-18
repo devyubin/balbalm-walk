@@ -2,8 +2,9 @@ package com.devocean.Balbalm.global.config;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
@@ -16,11 +17,13 @@ import lombok.Getter;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
 
-	@CreatedDate
-	@Column(name = "created_time", updatable = false)
+	@CreationTimestamp
+	@Column(name = "created_time", updatable = false, nullable = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime createdTime;
 
-	@LastModifiedDate
-	@Column(name = "updated_time")
+	@UpdateTimestamp
+	@Column(name = "updated_time", nullable = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime updatedTime;
 }
