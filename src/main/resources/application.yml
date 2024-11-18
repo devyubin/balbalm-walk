@@ -3,7 +3,7 @@ springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    path: /
+    path: /docs
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
@@ -17,3 +17,7 @@ balbalm:
 spring:
   profiles:
     active: prod
+
+server:
+  servlet:
+    context-path: /walk

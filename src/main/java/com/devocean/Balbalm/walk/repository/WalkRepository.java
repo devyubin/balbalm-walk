@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface WalkRepository extends JpaRepository<Walk, Long> {
     List<Walk> findByCreatedTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
-    List<Walk> findByCreatedTimeAndUserId(LocalDate createdDate, String userId);
+    List<Walk> findByCreatedTimeBetweenAndUserId(LocalDateTime startDate, LocalDateTime endDate, String userId);
     @Query("SELECT w FROM Walk w WHERE YEAR(w.createdTime) = :year AND MONTH(w.createdTime) = :month AND w.userId = :id ORDER BY w.createdTime")
     List<Walk> findByYearAndMonth(@Param("year") int year, @Param("month") int month, @Param("id") String userId);
 }
