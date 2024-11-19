@@ -17,14 +17,15 @@ public class WalkController {
     private final SaveWalkUseCase saveWalkUseCase;
     private final GetWalkRankUseCase getWalkRankUseCase;
 
-    @PostMapping
     @Operation(summary = "걷기 정보 저장", description = "걷기 정보를 저장합니다.")
-    public CommonResponse<SaveWalkUseCase.Result> saveWalk(@RequestBody SaveWalkUseCase.Command command) {
+    @PostMapping
+    public CommonResponse<SaveWalkUseCase.Result> saveWalk(@RequestHeader("Authorization") String token, @RequestBody SaveWalkUseCase.Command command) {
+        command.setToken(token.substring(7));
         return new CommonResponse<>(saveWalkUseCase.execute(command));
     }
 
-    @GetMapping("/rank")
     @Operation(summary = "걷기 순위 조회", description = "걷기 순위를 조회합니다.")
+    @GetMapping("/rank")
     public CommonResponse<GetWalkRankUseCase.Result> getWalkRank() {
         return new CommonResponse<>(getWalkRankUseCase.execute(null));
     }

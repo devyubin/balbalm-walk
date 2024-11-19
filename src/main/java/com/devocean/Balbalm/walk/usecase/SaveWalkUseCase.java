@@ -1,9 +1,11 @@
 package com.devocean.Balbalm.walk.usecase;
 
 import com.devocean.Balbalm.global.UseCase;
+import com.devocean.Balbalm.global.util.JwtUtil;
 import com.devocean.Balbalm.walk.dataprovider.WalkDataProvider;
 import com.devocean.Balbalm.walk.domain.WalkDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +21,16 @@ import java.time.LocalDateTime;
 public class SaveWalkUseCase implements UseCase<SaveWalkUseCase.Command, SaveWalkUseCase.Result> {
 
     private final WalkDataProvider walkDataProvider;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Result execute(Command input) {
         // TODO Mission 구독 취소 API 호출
 
+        String userId = jwtUtil.extractSocialId(input.getToken());
         walkDataProvider.saveWalk(
                 WalkDomain.builder()
+                        .userId(userId)
                         .time(input.getTime())
                         .distance(input.getDistance())
                         .kcal(input.getKcal())
@@ -46,7 +51,8 @@ public class SaveWalkUseCase implements UseCase<SaveWalkUseCase.Command, SaveWal
         @Serial
         private static final long serialVersionUID = 7945692511272396990L;
 
-        private String userId;
+        @JsonIgnore
+        private String token;
         private long time;
         private float distance;
         private int kcal;
