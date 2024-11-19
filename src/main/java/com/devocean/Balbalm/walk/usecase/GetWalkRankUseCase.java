@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, GetWalkRankUseCase.Result> {
     private final WalkDataProvider walkDataProvider;
-    private static final int TOP_RANK_NUMBER = 3;
 
     @Override
     public Result execute(Command input) {
@@ -49,7 +48,6 @@ public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, G
                 .entrySet()
                 .stream()
                 .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
-                .limit(TOP_RANK_NUMBER)
                 .toList();
 
         List<Result.Rank> rankList = rankUsers.stream()
