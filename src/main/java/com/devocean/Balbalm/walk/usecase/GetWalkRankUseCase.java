@@ -2,6 +2,8 @@ package com.devocean.Balbalm.walk.usecase;
 
 import com.devocean.Balbalm.global.UseCase;
 import com.devocean.Balbalm.walk.dataprovider.WalkDataProvider;
+import com.devocean.Balbalm.walk.dataprovider.UserDataProvider;
+import com.devocean.Balbalm.walk.domain.UserDomain;
 import com.devocean.Balbalm.walk.domain.WalkDomain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -11,10 +13,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, GetWalkRankUseCase.Result> {
     private final WalkDataProvider walkDataProvider;
+    private final UserDataProvider userDataProvider;
 
     @Override
     public Result execute(Command input) {
@@ -54,14 +55,13 @@ public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, G
                 .map(entry -> {
                     String userId = entry.getKey();
                     long totalDistance = entry.getValue().longValue();
-                    String profileImageUrl = "";
-                    String nickName = "";
 
+                    UserDomain userDomain = userDataProvider.getUserInfo(userId);
                     return Result.Rank.builder()
                             .userId(userId)
                             .totalDistance(totalDistance)
-                            .profileImageUrl(profileImageUrl)
-                            .nickName(nickName)
+                            .profileImageUrl(userDomain.getProfileImageUrl())
+                            .nickName(userDomain.getNickName())
                             .build();
                 }).toList();
 
