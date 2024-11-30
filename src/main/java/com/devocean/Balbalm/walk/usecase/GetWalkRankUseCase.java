@@ -2,6 +2,8 @@ package com.devocean.Balbalm.walk.usecase;
 
 import com.devocean.Balbalm.global.UseCase;
 import com.devocean.Balbalm.walk.dataprovider.WalkDataProvider;
+import com.devocean.Balbalm.walk.dataprovider.UserDataProvider;
+import com.devocean.Balbalm.walk.domain.UserDomain;
 import com.devocean.Balbalm.walk.domain.WalkDomain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -11,8 +13,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,14 +24,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, GetWalkRankUseCase.Result> {
     private final WalkDataProvider walkDataProvider;
-    private static final int TOP_RANK_NUMBER = 3;
+    private final UserDataProvider userDataProvider;
 
     @Override
     public Result execute(Command input) {
 
-        LocalDate today = LocalDate.now();
-        LocalDate startDate = today.withDayOfMonth(1);
-        LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());
+        LocalDateTime now = LocalDateTime.now();
+        YearMonth currentYearMonth = YearMonth.of(now.getYear(), now.getMonth());
+        int lastDayOfMonth = currentYearMonth.lengthOfMonth();
+
+        LocalDateTime startDate = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 0, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(now.getYear(), now.getMonth(), lastDayOfMonth, 23, 59, 59);
 
         List<WalkDomain> walkRank = walkDataProvider.getWalkRank(startDate, endDate);
         if (ObjectUtils.isEmpty(walkRank)) {
@@ -44,21 +49,19 @@ public class GetWalkRankUseCase implements UseCase<GetWalkRankUseCase.Command, G
                 .entrySet()
                 .stream()
                 .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
-                .limit(TOP_RANK_NUMBER)
                 .toList();
 
         List<Result.Rank> rankList = rankUsers.stream()
                 .map(entry -> {
                     String userId = entry.getKey();
                     long totalDistance = entry.getValue().longValue();
-                    String profileImageUrl = "";
-                    String nickName = "";
 
+                    UserDomain userDomain = userDataProvider.getUserInfo(userId);
                     return Result.Rank.builder()
                             .userId(userId)
                             .totalDistance(totalDistance)
-                            .profileImageUrl(profileImageUrl)
-                            .nickName(nickName)
+                            .profileImageUrl(userDomain.getProfileImageUrl())
+                            .nickName(userDomain.getNickName())
                             .build();
                 }).toList();
 

@@ -2,16 +2,15 @@ package com.devocean.Balbalm.walk.dataprovider.impl;
 
 import com.devocean.Balbalm.walk.dataprovider.WalkDataProvider;
 import com.devocean.Balbalm.walk.domain.WalkDomain;
-import com.devocean.Balbalm.walk.domain.WalkRankDomain;
 import com.devocean.Balbalm.walk.entity.Walk;
 import com.devocean.Balbalm.walk.repository.WalkRepository;
-import com.devocean.Balbalm.walk.usecase.SaveWalkUseCase;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -26,7 +25,7 @@ public class WalkDataProviderImpl implements WalkDataProvider {
     }
 
     @Override
-    public List<WalkDomain> getWalkRank(LocalDate startDate, LocalDate endDate) {
+    public List<WalkDomain> getWalkRank(LocalDateTime startDate, LocalDateTime endDate) {
         return WalkDataProviderImplMapper.MAPPER.toDomain(walkRepository.findByCreatedTimeBetween(startDate, endDate));
     }
 
@@ -34,6 +33,7 @@ public class WalkDataProviderImpl implements WalkDataProvider {
     public interface WalkDataProviderImplMapper {
         WalkDataProviderImpl.WalkDataProviderImplMapper MAPPER = Mappers.getMapper(WalkDataProviderImpl.WalkDataProviderImplMapper.class);
         Walk toEntity(WalkDomain walkDomain);
+
         List<WalkDomain> toDomain(List<Walk> walk);
     }
 }
