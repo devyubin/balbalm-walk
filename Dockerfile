@@ -17,14 +17,4 @@ COPY --from=builder build/libs/*.jar app.jar
 
 VOLUME /tmp
 
-ENTRYPOINT ["java",
-    "-javaagent:/usr/agent/dd-java-agent.jar",
-    "-Ddd.agent.host=datadog-agent.datadog",
-    "-Ddd.profiling.enabled=true",
-    "-XX:FlightRecorderOptions=stackdepth=256",
-    "-Ddd.logs.injection=true",
-    "-Ddd.service=balbalm-walk",
-    "-Ddd.env=prod",
-    "-Dspring.profiles.active=production",
-    "-jar",
-    "/app.jar"]
+ENTRYPOINT ["java", "-javaagent:/usr/agent/dd-java-agent.jar", "-Ddd.agent.host=datadog-agent.datadog", "-Ddd.profiling.enabled=true", "-XX:FlightRecorderOptions=stackdepth=256", "-Ddd.logs.injection=true", "-Ddd.service=balbalm-walk", "-Ddd.env=prod", "-Dspring.profiles.active=production", "-jar", "/app.jar"]
