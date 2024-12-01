@@ -11,7 +11,7 @@ RUN ./gradlew clean bootJar
 
 FROM openjdk:17
 
-ADD 'https://dtdg.co/latest-java-tracer' dd-java-agent.jar
+ADD 'https://dtdg.co/latest-java-tracer' /usr/agent/dd-java-agent.jar
 
 COPY --from=builder build/libs/*.jar app.jar
 
