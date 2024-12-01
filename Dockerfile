@@ -15,6 +15,8 @@ ADD 'https://dtdg.co/latest-java-tracer' /usr/agent/dd-java-agent.jar
 
 COPY --from=builder build/libs/*.jar app.jar
 
+COPY src/main/resources/application*.yml /app/resources/
+
 VOLUME /tmp
 
 ENTRYPOINT ["java", "-javaagent:/usr/agent/dd-java-agent.jar", "-Ddd.agent.host=datadog-agent.datadog", "-Ddd.profiling.enabled=true", "-XX:FlightRecorderOptions=stackdepth=256", "-Ddd.logs.injection=true", "-Ddd.service=balbalm-walk", "-Ddd.env=prod", "-Dspring.profiles.active=production", "-jar", "/app.jar"]
